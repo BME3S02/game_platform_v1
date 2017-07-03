@@ -18,6 +18,25 @@
     <input id="totalCars" name="totalCars" type='range' min='1' max='200' title="integer (0-200)" value=<?php if(isset($_GET['totalCars'])){ echo $_GET['totalCars']; } else { echo  $totalCars; }?>>
     <label for="maxSpeed">Max Speed (<span id="currentmaxSpeed"></span>) :</label></th>
     <input id="maxSpeed" name="maxSpeed" type='range' min='1' max='12000' title="integer (0-6000)" value=<?php if(isset($_GET['maxSpeed'])){ echo $_GET['maxSpeed']; } else { echo $maxSpeed; }?>>
+    <div style="display:none">
+      <select id="backgroundImg" name="backgroundImg" style="border: 1;color: black;background: transparent;font-size: 10px;font-weight: bold;padding: 2px 10px;width: 100px; *width: 80px;*background: #58B14C;-webkit-appearance: none;">
+        <option value="background1">background1</option>
+        <option value="background2">background2</option>
+        <option value="background3">background3</option>
+        <option value="background4">background4</option>
+        <option value="background5">background5</option>
+      </select>
+    </div>
+    <div style="display:none">
+      <select id="sprites" name="sprites" style="border: 1;color: black;background: transparent;font-size: 10px;font-weight: bold;padding: 2px 10px;width: 100px; *width: 80px;*background: #58B14C;-webkit-appearance: none;">
+        <option value="sprites1">sprites1</option>
+        <option value="sprites2">sprites2</option>
+        <option value="sprites3">sprites3</option>
+        <option value="sprites4">sprites4</option>
+        <option value="sprites5">sprites5</option>
+      </select>
+    </div>
+    
     <input type="submit" style="float: right;"value="Apply" id="submit" name="submit" class="btn btn-primary">
   </form>
 </div>

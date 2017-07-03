@@ -82,39 +82,53 @@
       }
 
       function changeStage(){
-        <?php
-        if(!isset($_GET['backgroundImg']) || !isset($_GET['sprites'])){
-          echo 'document.getElementById("backgroundImg").value = "background" +2;';
-          echo 'document.getElementById("sprites").value = "sprites" + 2;';
+	     var maxStage;
+	     var NewStageNumber = Math.floor(Math.random() * (maxStage - 1 + 1)) + 1; // Math.floor(Math.random() * (max - min + 1)) + min; 
+
+		 switch (1) {
+		 case 1:
+		  <?php
+if(!isset($_GET['backgroundImg']) || !isset($_GET['sprites'])){
+}
+		  echo 'document.getElementById("backgroundImg").value = "background1" ;';
+          echo 'document.getElementById("sprites").value = "sprites1" ;';
           echo 'document.getElementById("submit").click();';
-          echo 'return false;';
-        }
-        else if( ($_GET['backgroundImg'] == 'background1') && ($_GET['sprites'] == 'sprites1') ){
-          echo 'document.getElementById("backgroundImg").value = "background" +2;';
-          echo 'document.getElementById("sprites").value = "sprites" +2;';
+          echo 'return false;'; ?>
+		   
+		  break;
+		 case 2:
+		  <?php 
+if(!isset($_GET['backgroundImg']) || !isset($_GET['sprites'])){
+}		  
+		  echo 'document.getElementById("backgroundImg").value = "background2" ;';
+          echo 'document.getElementById("sprites").value = "sprites2" ;';
           echo 'document.getElementById("submit").click();';
-          echo 'return false;';
-        }
-        else if( ($_GET['backgroundImg'] == 'background2') && ($_GET['sprites'] == 'sprites2') ){
-          echo 'document.getElementById("backgroundImg").value = "background" +3;';
-          echo 'document.getElementById("sprites").value = "sprites" +3;';
+          echo 'return false;'; ?>
+		  break;
+
+		 case 3:
+		  <?php 
+if(!isset($_GET['backgroundImg']) || !isset($_GET['sprites'])){
+}		  
+		  echo 'document.getElementById("backgroundImg").value = "background3" ;';
+          echo 'document.getElementById("sprites").value = "sprites3" ;';
           echo 'document.getElementById("submit").click();';
-          echo 'return false;';
-        }
-        else if( ($_GET['backgroundImg'] == 'background3') && ($_GET['sprites'] == 'sprites3') ){
-          echo 'document.getElementById("backgroundImg").value = "background" +4;';
-          echo 'document.getElementById("sprites").value = "sprites" +4;';
+          echo 'return false;'; ?>
+  		  break;
+
+		 case 4:
+		  <?php 
+if(!isset($_GET['backgroundImg']) || !isset($_GET['sprites'])){
+}		  
+		  echo 'document.getElementById("backgroundImg").value = "background4" ;';
+          echo 'document.getElementById("sprites").value = "sprites4" ;';
           echo 'document.getElementById("submit").click();';
-          echo 'return false;';
-        }
-        else if( ($_GET['backgroundImg'] == 'background4') && ($_GET['sprites'] == 'sprites4') ){
-          echo 'document.getElementById("backgroundImg").value = "background" +5;';
-          echo 'document.getElementById("sprites").value = "sprites" +5;';
-          echo 'document.getElementById("submit").click();';
-          echo 'return false;';
-        }
-        ?>
-      }
+          echo 'return false;'; ?>
+		  break;
+
+		 
+		 }
+        
 
       <!-- ***************************************************************** -->
       <?php
@@ -179,8 +193,8 @@
       function startGame(){
 
 
-        setTimeout(changeStage, 20000);
-        setTimeout(stop, 22000);
+        setTimeout(changeStage, 5000);
+        setTimeout(stop, 7000);
 
 
 
@@ -292,8 +306,6 @@
             carW = car.sprite.w * SPRITES.SCALE;
             if (speed > car.speed) {
               if (Util.overlap(playerX, playerW, car.offset, carW, 0.8)) {
-				var audio = new Audio('music/crash.mp3');
-                audio.play();
                 speed    = car.speed * (car.speed/speed);
                 position = Util.increase(car.z, -playerZ, trackLength);
                 break;
