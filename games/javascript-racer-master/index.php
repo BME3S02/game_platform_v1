@@ -23,7 +23,10 @@
     </div>
     <img id="changeStageMessage" width="220" height="277" src="images/maxresdefault.jpg" style="display:none;">
     <img id="winMessage" width="220" height="277" src="images/Congratulations-Winners.jpg" style="display:none;">
-	<div id="nextStage">
+	<div id="startGame" class="gameToast">
+		Start GAME
+	</div>
+	<div id="nextStage" class="gameToast">
 		Next STAGE
 	</div>
     <canvas id="canvas">
@@ -169,15 +172,25 @@
             clear();
         },1000);
       }
+	  function displayStartGame() {
+		console.log("Show Start Game");
+		var msg = document.getElementById("startGame");
+		msg.className = "gameToast show";
+	  }
+	  function hideStartGame() {
+		console.log("Hide Start Game");
+		var msg = document.getElementById("startGame");
+		msg.className = "gameToast";
+	  }
 	  function displayNextStage() {
 		console.log("Show Next Stage");
 		var msg = document.getElementById("nextStage");
-		msg.className = "show";
+		msg.className = "gameToast show";
 	  }
 	  function hideNextStage() {
 		console.log("Hide Next Stage");
 		var msg = document.getElementById("nextStage");
-		msg.className = "";
+		msg.className = "gameToast";
 	  }
       function displayWinMessage()
       {
@@ -260,6 +273,8 @@
 
 		console.log("startGame(): maxTime[" + maxTime + "]");
 
+		displayStartGame();
+		setTimeout(hideStartGame, 2000);
         setTimeout(changeStage, maxTime * 1000);
         setTimeout(stop, maxTime * 4 * 1000);
   //      GameLoop();

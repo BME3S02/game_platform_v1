@@ -27,9 +27,9 @@ body          { font-family: Arial, Helvetica, sans-serif; }
 #hud .fastest          { background-color: rgba(255,215,0,0.5); }
 
 /*
-Next Stage
+Game Toast
 */
-#nextStage {
+.gameToast {
 	position: absolute;
 	opacity: 0;
     z-index: 1;
@@ -48,6 +48,6 @@ Next Stage
     transition: opacity .5s;
 }
 
-#nextStage.show {
+.gameToast.show {
 	opacity: 1;
 }
