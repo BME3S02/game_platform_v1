@@ -2,11 +2,12 @@
 session_start();
 include("mysql_connect.php");
 
-if(isset($_GET['roadWidth']) || isset($_GET['totalCars']) || isset($_GET['maxSpeed']) || isset($_GET['backgroundImg'])|| isset($_GET['sprites'])){
+if(isset($_GET['roadWidth']) || isset($_GET['totalCars']) || isset($_GET['maxSpeed']) || isset($_GET['maxTime']) || isset($_GET['backgroundImg'])|| isset($_GET['sprites'])){
 
   $roadWidth = $_GET['roadWidth'];
   $totalCars = $_GET['totalCars'];
   $maxSpeed = $_GET['maxSpeed'];
+  $maxTime = $_GET['maxTime'];
   $backgroundImg = $_GET['backgroundImg'];
   $sprites = $_GET['sprites'];
 
@@ -106,6 +107,7 @@ else {
     $rowMaxSpeed = mysql_fetch_array($resultMaxSpeed,MYSQLI_ASSOC);
     $maxSpeed = $rowMaxSpeed['value'];
   }
+  $maxTime = 60;
 
 //  if($countResultLoadBackgroundImg != 1){
 //    $backgroundImg = "background1";

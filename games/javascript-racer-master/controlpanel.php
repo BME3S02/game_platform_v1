@@ -18,6 +18,8 @@
     <input id="totalCars" name="totalCars" type='range' min='1' max='200' title="integer (0-200)" value=<?php if(isset($_GET['totalCars'])){ echo $_GET['totalCars']; } else { echo  $totalCars; }?>>
     <label for="maxSpeed">Max Speed (<span id="currentmaxSpeed"></span>) :</label></th>
     <input id="maxSpeed" name="maxSpeed" type='range' min='1' max='12000' title="integer (0-6000)" value=<?php if(isset($_GET['maxSpeed'])){ echo $_GET['maxSpeed']; } else { echo $maxSpeed; }?>>
+    <label for="maxTime">Max Time[sec] (<span id="currentmaxTime"></span>) :</label></th>
+    <input id="maxTime" name="maxTime" type='range' min='30' max='180' title="integer (0-6000)" value=<?php if(isset($_GET['maxTime'])){ echo $_GET['maxTime']; } else { echo $maxTime; }?>>
     <div style="display:none">
       <select id="backgroundImg" name="backgroundImg" style="border: 1;color: black;background: transparent;font-size: 10px;font-weight: bold;padding: 2px 10px;width: 100px; *width: 80px;*background: #58B14C;-webkit-appearance: none;">
         <option value="background1">background1</option>
