@@ -42,23 +42,7 @@
   <input type="button" value="Next Level" onclick="nextLevel();" class="btn btn-primary" style="margin-left:60px;"> <!-- ***************************************************************** -->
   <audio id='music'>
     <!--<source src="music/racer.ogg">-->
-      <source src="<?php
-      if(!isset($_GET['backgroundImg']) || !isset($_GET['sprites'])){
-        echo 'music/music1.mp3';
-      }
-      else if( ($_GET['backgroundImg'] == 'background1') && ($_GET['sprites'] == 'sprites1') ){
-        echo 'music/music1.mp3';
-      }
-      else if( ($_GET['backgroundImg'] == 'background2') && ($_GET['sprites'] == 'sprites2') ){
-        echo 'music/music2.mp3';
-      }
-      else if( ($_GET['backgroundImg'] == 'background3') && ($_GET['sprites'] == 'sprites3') ){
-        echo 'music/music3.mp3';
-      }
-      else if( ($_GET['backgroundImg'] == 'background4') && ($_GET['sprites'] == 'sprites4') ){
-        echo 'music/music4.mp3';
-      }
-      ?>">
+      <source id="audioSource" src="music/music1.mp3">
       </audio>
       <script src="js/stats.js"></script>
       <script src="js/common.js"></script>
@@ -70,6 +54,7 @@
 	   *                       *
 	   *************************/
 	  var NewGame = true;
+	  var maxStage = 8;
 	  
       function nextLevel(){
         document.getElementById("totalCars").value *= 1.1;
@@ -95,13 +80,9 @@
       }
 
       function changeStage(){
-	    var maxStage = 4;
+	    maxStage = 8;
 	    var NewStageNumber = Math.floor(Math.random() * (maxStage - 1 + 1)) + 1; // Math.floor(Math.random() * (max - min + 1)) + min; 
-		switch (NewStageNumber) {
-		  case 1:
-		  case 2:
-		  case 3:
-		  case 4:
+		if(NewStageNumber > 0 && NewStageNumber <= 8) {
 			console.log("New stage: " + NewStageNumber);
 			Game.loadImages(
 				["background" + NewStageNumber, "sprites" + NewStageNumber],
@@ -113,19 +94,24 @@
 					updateHud('fast_lap_time', formatTime(Util.toFloat(Dom.storage.fast_lap_time)));
 				}
 			);
+			var audio = document.getElementById("music");
+			//audio.stop();
+			var source = document.getElementById("audioSource");
+			audio.load();
+			source.src = "music/music" + NewStageNumber + ".mp3";
+			Game.playMusic();
 			displayNextStage();
 			setTimeout(hideNextStage, 2000);
 			setTimeout(changeStage, maxTime * 1000);
-		    break;
-	/*	  case 5:
+		} else if(NewStageNumber == 9) {
+			/*
 			console.log("New stage: " + NewStageNumber);
 		    <?php echo 'document.getElementById("backgroundImg").value = "background5" ;';
           echo 'document.getElementById("sprites").value = "sprites5" ;';
           echo 'document.getElementById("submit").click();';
           echo 'return false;'; ?>
-		    break;
 			*/
-		  default:
+		} else {
 			console.log("New stage error: " + NewStageNumber);
 		}
       }
@@ -276,7 +262,7 @@
 		displayStartGame();
 		setTimeout(hideStartGame, 2000);
         setTimeout(changeStage, maxTime * 1000);
-        setTimeout(stop, maxTime * 4 * 1000);
+        setTimeout(stop, maxTime * maxStage * 1000);
   //      GameLoop();
 //	 }
 
