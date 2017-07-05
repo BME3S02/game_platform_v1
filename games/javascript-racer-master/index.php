@@ -41,7 +41,7 @@
   <input type="button" value="Previous Level" onclick="previousLevel();" class="btn btn-primary" style="margin-left:60px;"><!-- ***************************************************************** -->
   <input type="button" value="Next Level" onclick="nextLevel();" class="btn btn-primary" style="margin-left:60px;"> <!-- ***************************************************************** -->
   <audio id='music'>
-    <source src="music/racer.ogg">
+    <!--<source src="music/racer.ogg">-->
       <source src="<?php
       if(!isset($_GET['backgroundImg']) || !isset($_GET['sprites'])){
         echo 'music/music1.mp3';
