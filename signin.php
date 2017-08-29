@@ -4,9 +4,9 @@
   	include("mysql_connect.php");
     $profile = $_POST['profile'];
     $sql = "SELECT Name FROM profile WHERE Name = '$profile' ";
-    $result = mysql_query($sql, $database);
-    $row = mysql_fetch_array($result,MYSQLI_ASSOC);
-    $count = mysql_num_rows($result);
+    $result = mysqli_query($database, $sql);
+    $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+    $count = mysqli_num_rows($result);
 
     if($profile == ''){
       echo json_encode(array(

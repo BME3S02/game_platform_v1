@@ -1,57 +1,3 @@
-<?php include 'savesetting.php'; ?>
-<html>
-<head>
-  <title>Javascript Racer - v4 (final)</title>
-  <?php include 'head.php'; ?>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <link href="css/common.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="../../js/jquery-2.1.4.min.js"></script>
-  <script type="text/javascript" src="js/sendrecord.js"></script>
-
-  <link href="css/controlpanel.css" rel="stylesheet" type="text/css" />
-</head>
-
-<body style="margin: 0; height: 100%; overflow: hidden">
-  <?php include 'nav.php'; ?>
-  <?php include 'controlpanel.php'; ?>
-  <div id="racer">
-    <div id="hud" style="width:640px">
-      <span id="speed"            class="hud"><span id="speed_value" class="value">0</span> mph</span>
-      <span id="current_lap_time" class="hud">Time: <span id="current_lap_time_value" class="value">0.0</span></span>
-      <span id="last_lap_time"    class="hud">Last Lap: <span id="last_lap_time_value" class="value">0.0</span></span>
-      <span id="fast_lap_time"    class="hud">Fastest Lap: <span id="fast_lap_time_value" class="value">0.0</span></span>
-    </div>
-    <img id="changeStageMessage" width="220" height="277" src="images/maxresdefault.jpg" style="display:none;">
-    <img id="winMessage" width="220" height="277" src="images/Congratulations-Winners.jpg" style="display:none;">
-	<div id="startGame" class="gameToast">
-		Start GAME
-	</div>
-	<div id="nextStage" class="gameToast">
-		Next STAGE
-	</div>
-
-	<div id="YouWin" class="gameToast">
-		You Win
-	</div>
-    <canvas id="canvas">
-      Sorry, this example cannot be run because your browser does not support the &lt;canvas&gt; element
-    </canvas>
-
-    Loading...
-  </div>
-
-  <span id="mute"></span>
-  <input type="button" id="startbutton" value="start Game" onclick="startGame();" class="btn btn-primary" style="margin-left:60px;">
-  <input type="button" value="Previous Level" onclick="previousLevel();" class="btn btn-primary" style="margin-left:60px;"><!-- ***************************************************************** -->
-  <input type="button" value="Next Level" onclick="nextLevel();" class="btn btn-primary" style="margin-left:60px;"> <!-- ***************************************************************** -->
-  <input type="button" value="Test" onclick="stop();" class="btn btn-primary" style="margin-left:60px;"> 
-  <audio id='music'>
-    <!--<source src="music/racer.ogg">-->
-      <source id="audioSource" src="music/music1.mp3">
-      </audio>
-      <script src="js/stats.js"></script>
-      <script src="js/common.js"></script>
-      <script>
 <!-- ***************************************************************** -->
 	  /*************************
 	   *                       *
@@ -219,7 +165,7 @@
           background     = null;                    // our background image (loaded below)
           sprites        = null;                    // our spritesheet (loaded below)
           resolution     = null;                    // scaling factor to provide resolution independence (computed)
-          roadWidth      = $("#roadWidth").val();                   // actually half the roads width, easier math if the road spans from -roadWidth to +roadWidth
+          roadWidth      = <?php if(isset($_GET['roadWidth'])){ echo $_GET['roadWidth']; } else { echo $roadWidth; }?>;                   // actually half the roads width, easier math if the road spans from -roadWidth to +roadWidth
           segmentLength  = 300;                     // length of a single segment
           rumbleLength   = 3;                       // number of segments per red/white rumble strip
           trackLength    = 100;                    // z length of entire track (computed)
@@ -233,13 +179,13 @@
           fogDensity     = 5;                       // exponential fog density
           position       = 0;                       // current camera Z position (add playerZ to get player's absolute Z position)
           speed          = 0;                       // current speed
-          maxSpeed       = $("#maxSpeed").val();    // top speed (ensure we can't move more than 1 segment in a single frame to make collision detection easier)
+          maxSpeed       = <?php if(isset($_GET['maxSpeed'])){ echo $_GET['maxSpeed']; } else { echo $maxSpeed; }?>;    // top speed (ensure we can't move more than 1 segment in a single frame to make collision detection easier)
           accel          =  maxSpeed/5;             // acceleration rate - tuned until it 'felt' right
           breaking       = -maxSpeed;               // deceleration rate when braking
           decel          = -maxSpeed/5;             // 'natural' deceleration rate when neither accelerating, nor braking
           offRoadDecel   = -maxSpeed/2;             // off road deceleration is somewhere in between
           offRoadLimit   =  maxSpeed/4;             // limit when off road deceleration no longer applies (e.g. you can always go at least this speed even when off road)
-          totalCars      = $("#totalCars").val();                     // total number of cars on the road
+          totalCars      = <?php if(isset($_GET['totalCars'])){ echo $_GET['totalCars']; } else { echo $totalCars; }?>;                     // total number of cars on the road
           currentLapTime = 0;                       // current lap time
           lastLapTime    = null;                    // last lap time
           keyLeft        = false;
@@ -265,7 +211,7 @@
 		}
 		NewGame = false;
 	  
-		maxTime        = $("#maxSpeed").val();
+		maxTime        = <?php if(isset($_GET['maxTime'])){ echo $_GET['maxTime']; } else { echo $maxTime; }?>;
 
 		console.log("startGame(): maxTime[" + maxTime + "]");
 
@@ -1349,7 +1295,3 @@
 
             //=========================================================================
           }<!-- ***************************************************************** -->
-
-</script>
-        </body>
-        </html>

@@ -1,7 +1,7 @@
 <?php
   include("mysql_connect.php");
   $sql = "SELECT * FROM profile";
-  $result = mysql_query($sql, $database);
+  $result = mysqli_query($database,$sql);
 ?>
 <head>
 <style>
@@ -150,7 +150,7 @@ $(function() {
                     <label for="profile">Select Profile:</label>
                     <select class="form-control" id="profile" name="profile">'
                     <?php
-                      while ($row = mysql_fetch_array($result,MYSQLI_ASSOC)) {
+                      while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
                           echo "<option value='" . $row['Name'] ."'>" . $row['Name'] ."</option>";
                       }
                      ?>
