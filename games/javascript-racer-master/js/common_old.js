@@ -34,16 +34,7 @@ var Dom = {
 //=========================================================================
 
 var Util = {
-  shuffle: function(a) {
-    var j, x, i;
-    for (i = a.length; i; i--) {
-        j = Math.floor(Math.random() * i);
-        x = a[i - 1];
-        a[i - 1] = a[j];
-        a[j] = x;
-    }
-    return a;
-  },
+
   timestamp:        function()                  { return new Date().getTime();                                    },
   toInt:            function(obj, def)          { if (obj !== null) { var x = parseInt(obj, 10); if (!isNaN(x)) return x; } return Util.toInt(def, 0); },
   toFloat:          function(obj, def)          { if (obj !== null) { var x = parseFloat(obj);   if (!isNaN(x)) return x; } return Util.toFloat(def, 0.0); },
@@ -61,10 +52,7 @@ var Util = {
   increase:  function(start, increment, max) { // with looping
     var result = start + increment;
     while (result >= max)
-    {
-        result -= max;
-        document.dispatchEvent(new Event('finished'));
-    }
+      result -= max;
     while (result < 0)
       result += max;
     return result;
@@ -96,10 +84,10 @@ var Util = {
 //=========================================================================
 
 if (!window.requestAnimationFrame) { // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-  window.requestAnimationFrame = window.webkitRequestAnimationFrame ||
-                                 window.mozRequestAnimationFrame    ||
-                                 window.oRequestAnimationFrame      ||
-                                 window.msRequestAnimationFrame     ||
+  window.requestAnimationFrame = window.webkitRequestAnimationFrame || 
+                                 window.mozRequestAnimationFrame    || 
+                                 window.oRequestAnimationFrame      || 
+                                 window.msRequestAnimationFrame     || 
                                  function(callback, element) {
                                    window.setTimeout(callback, 1000 / 60);
                                  }
@@ -110,10 +98,7 @@ if (!window.requestAnimationFrame) { // http://paulirish.com/2011/requestanimati
 //=========================================================================
 
 var Game = {  // a modified version of the game loop from my previous boulderdash game - see http://codeincomplete.com/posts/2011/10/25/javascript_boulderdash/#gameloop
-  stagelist: [1,2,3,4,5,6,7,8,9],
-  init: function () {
-    Util.shuffle(stagelist);
-  },
+
   run: function(options) {
 
     Game.loadImages(options.images, function(images) {
@@ -184,15 +169,8 @@ var Game = {  // a modified version of the game loop from my previous boulderdas
         }
       }
     };
-    var press = function(ev) { onkey(ev.keyCode, 'down');};
-    var release = function (ev) { onkey(ev.keyCode, 'up');};
-    Dom.on(document, 'keydown', press );
-    Dom.on(document, 'keyup',  release);
-    Dom.on(document,'finished',function (ev) {
-      console.log("Done");
-      document.removeEventListener('keydown', press);
-      document.removeEventListener('keyup', release);
-    });
+    Dom.on(document, 'keydown', function(ev) { onkey(ev.keyCode, 'down'); } );
+    Dom.on(document, 'keyup',   function(ev) { onkey(ev.keyCode, 'up');   } );
   },
 
   //---------------------------------------------------------------------------
@@ -228,7 +206,7 @@ var Game = {  // a modified version of the game loop from my previous boulderdas
   playMusic: function() {
     var music = Dom.get('music');
     music.loop = true;
-    music.volume = 0.05; // shhhh! annoying music!
+    music.volume = 1;
     music.muted = (Dom.storage.muted === "true");
     music.play();
     Dom.toggleClassName('mute', 'on', music.muted);
@@ -266,14 +244,14 @@ var Render = {
         l1 = Render.laneMarkerWidth(w1, lanes),
         l2 = Render.laneMarkerWidth(w2, lanes),
         lanew1, lanew2, lanex1, lanex2, lane;
-
+    
     ctx.fillStyle = color.grass;
     ctx.fillRect(0, y2, width, y1 - y2);
-
+    
     Render.polygon(ctx, x1-w1-r1, y1, x1-w1, y1, x2-w2, y2, x2-w2-r2, y2, color.rumble);
     Render.polygon(ctx, x1+w1+r1, y1, x1+w1, y1, x2+w2, y2, x2+w2+r2, y2, color.rumble);
     Render.polygon(ctx, x1-w1,    y1, x1+w1, y1, x2+w2, y2, x2-w2,    y2, color.road);
-
+    
     if (color.lane) {
       lanew1 = w1*2/lanes;
       lanew2 = w2*2/lanes;
@@ -282,7 +260,7 @@ var Render = {
       for(lane = 1 ; lane < lanes ; lanex1 += lanew1, lanex2 += lanew2, lane++)
         Render.polygon(ctx, lanex1 - l1/2, y1, lanex1 + l1/2, y1, lanex2 + l2/2, y2, lanex2 - l2/2, y2, color.lane);
     }
-
+    
     Render.fog(ctx, 0, y1, width, y2-y1, fog);
   },
 
@@ -300,7 +278,7 @@ var Render = {
     var sourceY = layer.y
     var sourceW = Math.min(imageW, layer.x+layer.w-sourceX);
     var sourceH = imageH;
-
+    
     var destX = 0;
     var destY = offset;
     var destW = Math.floor(width * (sourceW/imageW));
@@ -359,70 +337,6 @@ var Render = {
   laneMarkerWidth: function(projectedRoadWidth, lanes) { return projectedRoadWidth/Math.max(32, 8*lanes); }
 
 }
-//=============================================================================
-// GAME STAGE BUILDER
-//=============================================================================
-
-var Stage = {
-    NewGame: true,
-    maxStage: 8,
-    nextLevel: function(){
-      console.log("called nextLevel");
-      document.getElementById("totalCars").value *= 1.1;
-      document.getElementById("maxSpeed").value *= 1.1;
-      document.getElementById("submit").click();
-      return false;
-      },
-    previousLevel: function(){
-      console.log("called previousLevel");
-      document.getElementById("totalCars").value /= 1.1;
-      document.getElementById("maxSpeed").value /= 1.1;
-      document.getElementById("submit").click();
-      return false;
-      },
-    changeStage: function(){
-      console.log("called changeStage");
-      //randomize stage
-      maxStage = 8;
-      var NewStageNumber = 9;//Math.floor(Math.random() * (maxStage - 1 + 1)) + 1; // Math.floor(Math.random() * (max - min + 1)) + min;// BUG:potential repeated stage
-
-      //
-    if(NewStageNumber > 0 && NewStageNumber <= 8) {
-      console.log("New stage: " + NewStageNumber);
-      Game.loadImages(
-        ["background" + NewStageNumber, "sprites" + NewStageNumber],
-        function(images) {
-          background = images[0];
-          sprites    = images[1];
-          reset();
-          Dom.storage.fast_lap_time = Dom.storage.fast_lap_time || 180;
-          updateHud('fast_lap_time', formatTime(Util.toFloat(Dom.storage.fast_lap_time)));
-        }
-      );
-      var audio = document.getElementById("music");
-      //audio.stop();
-      var source = document.getElementById("audioSource");
-      audio.load();
-      source.src = "music/music" + NewStageNumber + ".mp3";
-      Game.playMusic();
-      displayToast("Next Stage");
-      setTimeout(changeStage, maxTime * 1000);
-    } else if(NewStageNumber == 9) {
-      console.log("New stage: " + NewStageNumber);
-      document.getElementById("backgroundImg").value = "background5" ;
-      document.getElementById("sprites").value = "sprites5" ;
-      document.getElementById("submit").click();
-      return false;
-    } else {
-      console.log("New stage error: " + NewStageNumber);
-    }
-  },
-
-}
-
-//=============================================================================
-// GAME STAGE BUILDER
-//=============================================================================
 
 //=============================================================================
 // RACING GAME CONSTANTS
@@ -497,3 +411,4 @@ SPRITES.SCALE = 0.3 * (1/SPRITES.PLAYER_STRAIGHT.w) // the reference sprite widt
 SPRITES.BILLBOARDS = [SPRITES.BILLBOARD01, SPRITES.BILLBOARD02, SPRITES.BILLBOARD03, SPRITES.BILLBOARD04, SPRITES.BILLBOARD05, SPRITES.BILLBOARD06, SPRITES.BILLBOARD07, SPRITES.BILLBOARD08, SPRITES.BILLBOARD09];
 SPRITES.PLANTS     = [SPRITES.TREE1, SPRITES.TREE2, SPRITES.DEAD_TREE1, SPRITES.DEAD_TREE2, SPRITES.PALM_TREE, SPRITES.BUSH1, SPRITES.BUSH2, SPRITES.CACTUS, SPRITES.STUMP, SPRITES.BOULDER1, SPRITES.BOULDER2, SPRITES.BOULDER3];
 SPRITES.CARS       = [SPRITES.CAR01, SPRITES.CAR02, SPRITES.CAR03, SPRITES.CAR04, SPRITES.SEMI, SPRITES.TRUCK];
+

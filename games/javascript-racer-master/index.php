@@ -23,7 +23,8 @@
     </div>
     <img id="changeStageMessage" width="220" height="277" src="images/maxresdefault.jpg" style="display:none;">
     <img id="winMessage" width="220" height="277" src="images/Congratulations-Winners.jpg" style="display:none;">
-	<div id="startGame" class="gameToast">
+    <div id="toast" class="gameToast"></div>
+  <div id="startGame" class="gameToast">
 		Start GAME
 	</div>
 	<div id="nextStage" class="gameToast">
@@ -44,7 +45,7 @@
   <input type="button" id="startbutton" value="start Game" onclick="startGame();" class="btn btn-primary" style="margin-left:60px;">
   <input type="button" value="Previous Level" onclick="previousLevel();" class="btn btn-primary" style="margin-left:60px;"><!-- ***************************************************************** -->
   <input type="button" value="Next Level" onclick="nextLevel();" class="btn btn-primary" style="margin-left:60px;"> <!-- ***************************************************************** -->
-  <input type="button" value="Test" onclick="stop();" class="btn btn-primary" style="margin-left:60px;"> 
+  <input type="button" value="Test" onclick="writeWin();" class="btn btn-primary" style="margin-left:60px;">
   <audio id='music'>
     <!--<source src="music/racer.ogg">-->
       <source id="audioSource" src="music/music1.mp3">
@@ -58,83 +59,27 @@
 	   *    Global variable    *
 	   *                       *
 	   *************************/
-	  var NewGame = true;
-	  var maxStage = 8;
-	  
-      function nextLevel(){
-        document.getElementById("totalCars").value *= 1.1;
-        document.getElementById("maxSpeed").value *= 1.1;
-        document.getElementById("submit").click();
-        return false;
-      }
 
-      function previousLevel(){
-        document.getElementById("totalCars").value /= 1.1;
-        document.getElementById("maxSpeed").value /= 1.1;
-        document.getElementById("submit").click();
-        return false;
-      }
-      function stop(){
-        if(confirm('You Win the Game!!!!')){
-          window.location.href="../../index.php"
-          return true;
-        }
-        else{
-          return false;
-        }
-      }
+     function stop(){
+       console.log("called stop");
+       if(confirm('You Win the Game!!!!')){
+         window.location.href="../../index.php"
+         return true;
+       }
+       else{
+         return false;
+       }
+     }
 
-      function changeStage(){
-	    maxStage = 8;
-	    var NewStageNumber = Math.floor(Math.random() * (maxStage - 1 + 1)) + 1; // Math.floor(Math.random() * (max - min + 1)) + min; 
-		if(NewStageNumber > 0 && NewStageNumber <= 8) {
-			console.log("New stage: " + NewStageNumber);
-			Game.loadImages(
-				["background" + NewStageNumber, "sprites" + NewStageNumber],
-				function(images) {
-					background = images[0];
-					sprites    = images[1];
-					reset();
-					Dom.storage.fast_lap_time = Dom.storage.fast_lap_time || 180;
-					updateHud('fast_lap_time', formatTime(Util.toFloat(Dom.storage.fast_lap_time)));
-				}
-			);
-			var audio = document.getElementById("music");
-			//audio.stop();
-			var source = document.getElementById("audioSource");
-			audio.load();
-			source.src = "music/music" + NewStageNumber + ".mp3";
-			Game.playMusic();
-			displayNextStage();
-			setTimeout(hideNextStage, 2000);
-			setTimeout(changeStage, maxTime * 1000);
-		} else if(NewStageNumber == 9) {
-			/*
-			console.log("New stage: " + NewStageNumber);
-		    <?php echo 'document.getElementById("backgroundImg").value = "background5" ;';
-          echo 'document.getElementById("sprites").value = "sprites5" ;';
-          echo 'document.getElementById("submit").click();';
-          echo 'return false;'; ?>
-			*/
-		} else {
-			console.log("New stage error: " + NewStageNumber);
-		}
-      }
 
-      <!-- ***************************************************************** -->
-      <?php
-      if(isset($_GET['backgroundImg']) || isset($_GET['sprites'])){
-//	  if (NewGame) {
-	      echo 'startGame();';
-//	  else
- //         echo 'displayNextStage();setTimeout(hideNextStage, 2000);GameLoop();';
-      }
-      ?>
+
       function clear(){
+        console.log("called clear");
         ctx.clearRect(0,0,c.width,c.height);
       }
-      function writeStage()
+/*      function writeStage()
       {
+        console.log("called writeStage");
         var c=document.getElementById("canvas");
         var ctx=c.getContext("2d");
 
@@ -145,9 +90,11 @@
 		ctx.textAlign = "center";
 		ctx.fillText("Next STAGE", 150, 81.5);
 
-      }
+  }*/
+  /*
       function writeWin()
       {
+        console.log("called writeWin");
         var c=document.getElementById("canvas");
         var ctx=c.getContext("2d");
 
@@ -156,49 +103,31 @@
         ctx.drawImage(img, 1, 1, 300, 148);
 
       }
-      function displayMessage()
+      */
+/*      function displayMessage()
       {
         writeStage();
         setTimeout(function(){
             clear();
         },1000);
       }
-	  function displayStartGame() {
-		console.log("Show Start Game");
-		var msg = document.getElementById("startGame");
-		msg.className = "gameToast show";
-	  }
-	  function hideStartGame() {
-		console.log("Hide Start Game");
-		var msg = document.getElementById("startGame");
-		msg.className = "gameToast";
-	  }
-	  function displayNextStage() {
-		console.log("Show Next Stage");
-		var msg = document.getElementById("nextStage");
-		msg.className = "gameToast show";
-	  }
-	  function hideNextStage() {
-		console.log("Hide Next Stage");
-		var msg = document.getElementById("nextStage");
-		msg.className = "gameToast";
-	  }
-	  function displayWin() {
-		console.log("Show Next Stage");
-		var msg = document.getElementById("YouWin");
-		msg.className = "gameToast show";
-	  }
-     /* function displayWinMessage()
-      {
-        writeWin();
-        setTimeout(function(){
-            clear();
-        },1000);
-      }
+
 */
-      function ParametersInitialization() {
+    function displayToast(msg, time) {
+      console.log(msg);
+      var toast = $("#toast");
+      toast.html(msg);
+      toast.addClass("show");
+      if(time != "inf")
+      setTimeout(function () {
+        toast.removeClass("show");
+      },time||2000);
+    }
+
+  function ParametersInitialization() {
+      console.log("called ParametersInitialization");
 	    // Declare global variables
-        if (NewGame) {
+        if (Stage.NewGame) {
 	      fps            = 60;                      // how many 'update' frames per second
 		  step           = 1/fps;                   // how long is each frame (in seconds)
 		  width          = 1024;                    // logical canvas width
@@ -246,7 +175,7 @@
           keyRight       = false;
           keyFaster      = true;
           keySlower      = false;
-		 
+
 		  hud = {
             speed:            { value: null, dom: Dom.get('speed_value')            },
             current_lap_time: { value: null, dom: Dom.get('current_lap_time_value') },
@@ -256,33 +185,46 @@
 		}
 	  }
 
-		  
-      function startGame(){
 
-	  
-	    if(NewGame) {
+  function startGame(){
+    console.log("called startGame");
+
+	    if(Stage.NewGame) {
 			ParametersInitialization();
 		}
-		NewGame = false;
-	  
+		Stage.NewGame = false;
+
 		maxTime        = $("#maxSpeed").val();
 
 		console.log("startGame(): maxTime[" + maxTime + "]");
 
-		displayStartGame();
-		setTimeout(hideStartGame, 2000);
-        setTimeout(changeStage, maxTime * 1000);
-        setTimeout(stop, maxTime * maxStage * 1000);
-  //      GameLoop();
-//	 }
+		  displayToast("Start Game");
+        setTimeout(Stage.changeStage, maxTime * 1000);
+        setTimeout(stop, maxTime * Stage.maxStage * 1000);
 
-  //   function GameLoop {
-        //=========================================================================
-        // UPDATE THE GAME WORLD
-        //=========================================================================
+        console.log("at 742: game.run() ");
+        Game.run({
+          canvas: canvas, render: render, update: update, stats: stats, step: step,
+          images: ["background1", "sprites1"],
+          keys: [
+            { keys: [KEY.LEFT,  KEY.A], mode: 'down', action: function() { keyLeft   = true;  } },
+            { keys: [KEY.RIGHT, KEY.D], mode: 'down', action: function() { keyRight  = true;  } },
+            { keys: [KEY.UP,    KEY.W], mode: 'down', action: function() { keyFaster = true;  } },
+            { keys: [KEY.DOWN,  KEY.S], mode: 'down', action: function() { keySlower = true;  } },
+            { keys: [KEY.LEFT,  KEY.A], mode: 'up',   action: function() { keyLeft   = false; } },
+            { keys: [KEY.RIGHT, KEY.D], mode: 'up',   action: function() { keyRight  = false; } }
+          ],
+          ready: function(images) {
+            background = images[0];
+            sprites    = images[1];
+            reset();
+            Dom.storage.fast_lap_time = Dom.storage.fast_lap_time || 180;
+            updateHud('fast_lap_time', formatTime(Util.toFloat(Dom.storage.fast_lap_time)));
+          }
+        });
 
         function update(dt) {
-
+          console.log("called update");
           var n, car, carW, sprite, spriteW;
           var playerSegment = findSegment(position+playerZ);
           var playerW       = SPRITES.PLAYER_STRAIGHT.w * SPRITES.SCALE;
@@ -330,7 +272,7 @@
             carW = car.sprite.w * SPRITES.SCALE;
             if (speed > car.speed) {
               if (Util.overlap(playerX, playerW, car.offset, carW, 0.8)) {
-				var audio = new Audio('music/crash.mp3');
+				            var audio = new Audio('music/crash.mp3');
                 audio.play();
                 speed    = car.speed * (car.speed/speed);
                 position = Util.increase(car.z, -playerZ, trackLength);
@@ -350,7 +292,7 @@
 
             if (currentLapTime && (startPosition < playerZ)) {
               //alert("hellos");//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		displayWin();
+		          displayToast("You won!");
               lastLapTime    = currentLapTime;
               //currentLapTime = 0;
               if (lastLapTime <= Util.toFloat(Dom.storage.fast_lap_time)) {
@@ -378,6 +320,7 @@
         //-------------------------------------------------------------------------
 
         function updateCars(dt, playerSegment, playerW) {
+          console.log("called updateCars");
           var n, car, oldSegment, newSegment;
           for(n = 0 ; n < cars.length ; n++) {
             car         = cars[n];
@@ -395,7 +338,7 @@
         }
 
         function updateCarOffset(car, carSegment, playerSegment, playerW) {
-
+          //console.log("called updateCarOffset");
           var i, j, dir, segment, otherCar, otherCarW, lookahead = 20, carW = car.sprite.w * SPRITES.SCALE;
 
           // optimization, dont bother steering around other cars when 'out of sight' of the player
@@ -442,6 +385,7 @@
         //-------------------------------------------------------------------------
 
         function updateHud(key, value) { // accessing DOM can be slow, so only do it if value has changed
+          console.log("called updateHud");
           if (hud[key].value !== value) {
             hud[key].value = value;
             Dom.set(hud[key].dom, value);
@@ -449,6 +393,7 @@
         }
 
         function formatTime(dt) {
+          console.log("called formatTime");
           var minutes = Math.floor(dt/60);
           var seconds = Math.floor(dt - (minutes * 60));
           var tenths  = Math.floor(10 * (dt - Math.floor(dt)));
@@ -463,7 +408,7 @@
         //=========================================================================
 
         function render() {
-
+          console.log("called render");
           var baseSegment   = findSegment(position);
           var basePercent   = Util.percentRemaining(position, segmentLength);
           var playerSegment = findSegment(position+playerZ);
@@ -545,275 +490,271 @@
               }
             }
 
-            function findSegment(z) {
-              return segments[Math.floor(z/segmentLength) % segments.length];
-            }
+      function findSegment(z) {
+        //console.log("called findSegment");
+        return segments[Math.floor(z/segmentLength) % segments.length];
+      }
 
-            //=========================================================================
-            // BUILD ROAD GEOMETRY
-            //=========================================================================
+      //=========================================================================
+      // BUILD ROAD GEOMETRY
+      //=========================================================================
 
-            function lastY() { return (segments.length == 0) ? 0 : segments[segments.length-1].p2.world.y; }
+      function lastY() {console.log("called lastY"); return (segments.length == 0) ? 0 : segments[segments.length-1].p2.world.y; }
 
-            function addSegment(curve, y) {
-              var n = segments.length;
-              segments.push({
-                index: n,
-                p1: { world: { y: lastY(), z:  n   *segmentLength }, camera: {}, screen: {} },
-                p2: { world: { y: y,       z: (n+1)*segmentLength }, camera: {}, screen: {} },
-                curve: curve,
-                sprites: [],
-                cars: [],
-                color: Math.floor(n/rumbleLength)%2 ? COLORS.DARK : COLORS.LIGHT
-              });
-            }
+      function addSegment(curve, y) {
+        console.log("called addSegment");
+        var n = segments.length;
+        segments.push({
+          index: n,
+          p1: { world: { y: lastY(), z:  n   *segmentLength }, camera: {}, screen: {} },
+          p2: { world: { y: y,       z: (n+1)*segmentLength }, camera: {}, screen: {} },
+          curve: curve,
+          sprites: [],
+          cars: [],
+          color: Math.floor(n/rumbleLength)%2 ? COLORS.DARK : COLORS.LIGHT
+        });
+      }
 
-            function addSprite(n, sprite, offset) {
-              segments[n].sprites.push({ source: sprite, offset: offset });
-            }
+      function addSprite(n, sprite, offset) {
+        console.log("called addSprite");
+        segments[n].sprites.push({ source: sprite, offset: offset });
+      }
 
-            function addRoad(enter, hold, leave, curve, y) {
-              var startY   = lastY();
-              var endY     = startY + (Util.toInt(y, 0) * segmentLength);
-              var n, total = enter + hold + leave;
-              for(n = 0 ; n < enter ; n++)
-              addSegment(Util.easeIn(0, curve, n/enter), Util.easeInOut(startY, endY, n/total));
-              for(n = 0 ; n < hold  ; n++)
-              addSegment(curve, Util.easeInOut(startY, endY, (enter+n)/total));
-              for(n = 0 ; n < leave ; n++)
-              addSegment(Util.easeInOut(curve, 0, n/leave), Util.easeInOut(startY, endY, (enter+hold+n)/total));
-            }
+      function addRoad(enter, hold, leave, curve, y) {
+        console.log("called addRoad");
+        var startY   = lastY();
+        var endY     = startY + (Util.toInt(y, 0) * segmentLength);
+        var n, total = enter + hold + leave;
+        for(n = 0 ; n < enter ; n++)
+        addSegment(Util.easeIn(0, curve, n/enter), Util.easeInOut(startY, endY, n/total));
+        for(n = 0 ; n < hold  ; n++)
+        addSegment(curve, Util.easeInOut(startY, endY, (enter+n)/total));
+        for(n = 0 ; n < leave ; n++)
+        addSegment(Util.easeInOut(curve, 0, n/leave), Util.easeInOut(startY, endY, (enter+hold+n)/total));
+      }
 
-            var ROAD = {
-              LENGTH: { NONE: 0, SHORT:  25, MEDIUM:   50, LONG:  100 },
-              HILL:   { NONE: 0, LOW:    20, MEDIUM:   40, HIGH:   60 },
-              CURVE:  { NONE: 0, EASY:    2, MEDIUM:    4, HARD:    6 }
-            };
+      var ROAD = {
+        LENGTH: { NONE: 0, SHORT:  25, MEDIUM:   50, LONG:  100 },
+        HILL:   { NONE: 0, LOW:    20, MEDIUM:   40, HIGH:   60 },
+        CURVE:  { NONE: 0, EASY:    2, MEDIUM:    4, HARD:    6 }
+      };
 
-            function addStraight(num) {
-              num = num || ROAD.LENGTH.MEDIUM;
-              addRoad(num, num, num, 0, 0);
-            }
+      function addStraight(num) {
+        console.log("called addStraight");
+        num = num || ROAD.LENGTH.MEDIUM;
+        addRoad(num, num, num, 0, 0);
+      }
 
-            function addHill(num, height) {
-              num    = num    || ROAD.LENGTH.MEDIUM;
-              height = height || ROAD.HILL.MEDIUM;
-              addRoad(num, num, num, 0, height);
-            }
+      function addHill(num, height) {
+        console.log("called addHill");
+        num    = num    || ROAD.LENGTH.MEDIUM;
+        height = height || ROAD.HILL.MEDIUM;
+        addRoad(num, num, num, 0, height);
+      }
 
-            function addCurve(num, curve, height) {
-              num    = num    || ROAD.LENGTH.MEDIUM;
-              curve  = curve  || ROAD.CURVE.MEDIUM;
-              height = height || ROAD.HILL.NONE;
-              addRoad(num, num, num, curve, height);
-            }
+      function addCurve(num, curve, height) {
+        console.log("called addCurve");
+        num    = num    || ROAD.LENGTH.MEDIUM;
+        curve  = curve  || ROAD.CURVE.MEDIUM;
+        height = height || ROAD.HILL.NONE;
+        addRoad(num, num, num, curve, height);
+      }
 
-            function addLowRollingHills(num, height) {
-              num    = num    || ROAD.LENGTH.SHORT;
-              height = height || ROAD.HILL.LOW;
-              addRoad(num, num, num,  0,                height/2);
-              addRoad(num, num, num,  0,               -height);
-              addRoad(num, num, num,  ROAD.CURVE.EASY,  height);
-              addRoad(num, num, num,  0,                0);
-              addRoad(num, num, num, -ROAD.CURVE.EASY,  height/2);
-              addRoad(num, num, num,  0,                0);
-            }
+      function addLowRollingHills(num, height) {
+        console.log("called addLowRollingHills");
+        num    = num    || ROAD.LENGTH.SHORT;
+        height = height || ROAD.HILL.LOW;
+        addRoad(num, num, num,  0,                height/2);
+        addRoad(num, num, num,  0,               -height);
+        addRoad(num, num, num,  ROAD.CURVE.EASY,  height);
+        addRoad(num, num, num,  0,                0);
+        addRoad(num, num, num, -ROAD.CURVE.EASY,  height/2);
+        addRoad(num, num, num,  0,                0);
+      }
 
-            function addSCurves() {
-              addRoad(ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM,  -ROAD.CURVE.EASY,    ROAD.HILL.NONE);
-              addRoad(ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM,   ROAD.CURVE.MEDIUM,  ROAD.HILL.MEDIUM);
-              addRoad(ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM,   ROAD.CURVE.EASY,   -ROAD.HILL.LOW);
-              addRoad(ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM,  -ROAD.CURVE.EASY,    ROAD.HILL.MEDIUM);
-              addRoad(ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM,  -ROAD.CURVE.MEDIUM, -ROAD.HILL.MEDIUM);
-            }
+      function addSCurves() {
+        console.log("called addSCurves");
+        addRoad(ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM,  -ROAD.CURVE.EASY,    ROAD.HILL.NONE);
+        addRoad(ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM,   ROAD.CURVE.MEDIUM,  ROAD.HILL.MEDIUM);
+        addRoad(ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM,   ROAD.CURVE.EASY,   -ROAD.HILL.LOW);
+        addRoad(ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM,  -ROAD.CURVE.EASY,    ROAD.HILL.MEDIUM);
+        addRoad(ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM, ROAD.LENGTH.MEDIUM,  -ROAD.CURVE.MEDIUM, -ROAD.HILL.MEDIUM);
+      }
 
-            function addBumps() {
-              addRoad(10, 10, 10, 0,  5);
-              addRoad(10, 10, 10, 0, -2);
-              addRoad(10, 10, 10, 0, -5);
-              addRoad(10, 10, 10, 0,  8);
-              addRoad(10, 10, 10, 0,  5);
-              addRoad(10, 10, 10, 0, -7);
-              addRoad(10, 10, 10, 0,  5);
-              addRoad(10, 10, 10, 0, -2);
-            }
+      function addBumps() {
+        console.log("called addBumps");
+        addRoad(10, 10, 10, 0,  5);
+        addRoad(10, 10, 10, 0, -2);
+        addRoad(10, 10, 10, 0, -5);
+        addRoad(10, 10, 10, 0,  8);
+        addRoad(10, 10, 10, 0,  5);
+        addRoad(10, 10, 10, 0, -7);
+        addRoad(10, 10, 10, 0,  5);
+        addRoad(10, 10, 10, 0, -2);
+      }
 
-            function addDownhillToEnd(num) {
-              num = num || 200;
-              addRoad(num, num, num, -ROAD.CURVE.EASY, -lastY()/segmentLength);
-            }
+      function addDownhillToEnd(num) {
+        console.log("called addDownhillToEnd");
+        num = num || 200;
+        addRoad(num, num, num, -ROAD.CURVE.EASY, -lastY()/segmentLength);
+      }
 
-            function resetRoad() {
-              segments = [];
+      function resetRoad() {
+        console.log("called resetRoad");
+        segments = [];
 
-              addStraight(ROAD.LENGTH.SHORT);
-              addLowRollingHills();
-              addSCurves();
-              addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
-              addBumps();
-              addLowRollingHills();
-              addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
-              addStraight();
-              addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
-              addSCurves();
-              addCurve(ROAD.LENGTH.LONG, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
-              addHill(ROAD.LENGTH.LONG, ROAD.HILL.HIGH);
-              addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
-              addBumps();
-              addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
-              addStraight();
-              addSCurves();
-              addDownhillToEnd();
+        addStraight(ROAD.LENGTH.SHORT);
+        addLowRollingHills();
+        addSCurves();
+        addCurve(ROAD.LENGTH.MEDIUM, ROAD.CURVE.MEDIUM, ROAD.HILL.LOW);
+        addBumps();
+        addLowRollingHills();
+        addCurve(ROAD.LENGTH.LONG*2, ROAD.CURVE.MEDIUM, ROAD.HILL.MEDIUM);
+        addStraight();
+        addHill(ROAD.LENGTH.MEDIUM, ROAD.HILL.HIGH);
+        addSCurves();
+        addCurve(ROAD.LENGTH.LONG, -ROAD.CURVE.MEDIUM, ROAD.HILL.NONE);
+        addHill(ROAD.LENGTH.LONG, ROAD.HILL.HIGH);
+        addCurve(ROAD.LENGTH.LONG, ROAD.CURVE.MEDIUM, -ROAD.HILL.LOW);
+        addBumps();
+        addHill(ROAD.LENGTH.LONG, -ROAD.HILL.MEDIUM);
+        addStraight();
+        addSCurves();
+        addDownhillToEnd();
 
-              resetSprites();
-              resetCars();
+        resetSprites();
+        resetCars();
 
-              segments[findSegment(playerZ).index + 2].color = COLORS.START;
-              segments[findSegment(playerZ).index + 3].color = COLORS.START;
-              for(var n = 0 ; n < rumbleLength ; n++)
-              segments[segments.length-1-n].color = COLORS.FINISH;
+        segments[findSegment(playerZ).index + 2].color = COLORS.START;
+        segments[findSegment(playerZ).index + 3].color = COLORS.START;
+        for(var n = 0 ; n < rumbleLength ; n++)
+        segments[segments.length-1-n].color = COLORS.FINISH;
 
-              trackLength = segments.length * segmentLength;
-            }
+        trackLength = segments.length * segmentLength;
+      }
 
-            function resetSprites() {
-              var n, i;
+      function resetSprites() {
+        console.log("called resetSprites");
+        var n, i;
 
-              //  addSprite(20,  SPRITES.BILLBOARD07, -1);
-              //    addSprite(40,  SPRITES.BILLBOARD06, -1);
-              //     addSprite(60,  SPRITES.BILLBOARD08, -1);
-              //     addSprite(80,  SPRITES.BILLBOARD09, -1);
-              //     addSprite(100, SPRITES.BILLBOARD01, -1);
-              //      addSprite(120, SPRITES.BILLBOARD02, -1);
-              //      addSprite(140, SPRITES.BILLBOARD03, -1);
-              //    addSprite(160, SPRITES.BILLBOARD04, -1);
-              //      addSprite(180, SPRITES.BILLBOARD05, -1);
+        //  addSprite(20,  SPRITES.BILLBOARD07, -1);
+        //    addSprite(40,  SPRITES.BILLBOARD06, -1);
+        //     addSprite(60,  SPRITES.BILLBOARD08, -1);
+        //     addSprite(80,  SPRITES.BILLBOARD09, -1);
+        //     addSprite(100, SPRITES.BILLBOARD01, -1);
+        //      addSprite(120, SPRITES.BILLBOARD02, -1);
+        //      addSprite(140, SPRITES.BILLBOARD03, -1);
+        //    addSprite(160, SPRITES.BILLBOARD04, -1);
+        //      addSprite(180, SPRITES.BILLBOARD05, -1);
 
-              //    addSprite(240,                  SPRITES.BILLBOARD07, -1.2);
-              //      addSprite(240,                  SPRITES.BILLBOARD06,  1.2);
-              //      addSprite(segments.length - 25, SPRITES.BILLBOARD07, -1.2);
-              //      addSprite(segments.length - 25, SPRITES.BILLBOARD06,  1.2);
+        //    addSprite(240,                  SPRITES.BILLBOARD07, -1.2);
+        //      addSprite(240,                  SPRITES.BILLBOARD06,  1.2);
+        //      addSprite(segments.length - 25, SPRITES.BILLBOARD07, -1.2);
+        //      addSprite(segments.length - 25, SPRITES.BILLBOARD06,  1.2);
 
-              for(n = 10 ; n < 200 ; n += 4 + Math.floor(n/100)) {
-                addSprite(n, SPRITES.PALM_TREE, 0.5 + Math.random()*0.5);
-                addSprite(n, SPRITES.PALM_TREE,   1 + Math.random()*2);
-              }
+        for(n = 10 ; n < 200 ; n += 4 + Math.floor(n/100)) {
+          addSprite(n, SPRITES.PALM_TREE, 0.5 + Math.random()*0.5);
+          addSprite(n, SPRITES.PALM_TREE,   1 + Math.random()*2);
+        }
 
-              for(n = 250 ; n < 1000 ; n += 5) {
-                addSprite(n,     SPRITES.COLUMN, 1.1);
-                addSprite(n + Util.randomInt(0,5), SPRITES.TREE1, -1 - (Math.random() * 2));
-                addSprite(n + Util.randomInt(0,5), SPRITES.TREE2, -1 - (Math.random() * 2));
-              }
+        for(n = 250 ; n < 1000 ; n += 5) {
+          addSprite(n,     SPRITES.COLUMN, 1.1);
+          addSprite(n + Util.randomInt(0,5), SPRITES.TREE1, -1 - (Math.random() * 2));
+          addSprite(n + Util.randomInt(0,5), SPRITES.TREE2, -1 - (Math.random() * 2));
+        }
 
-              for(n = 200 ; n < segments.length ; n += 3) {
-                addSprite(n, Util.randomChoice(SPRITES.PLANTS), Util.randomChoice([1,-1]) * (2 + Math.random() * 5));
-              }
+        for(n = 200 ; n < segments.length ; n += 3) {
+          addSprite(n, Util.randomChoice(SPRITES.PLANTS), Util.randomChoice([1,-1]) * (2 + Math.random() * 5));
+        }
 
-              var side, sprite, offset;
-              for(n = 1000 ; n < (segments.length-50) ; n += 100) {
-                side      = Util.randomChoice([1, -1]);
-                addSprite(n + Util.randomInt(0, 50), Util.randomChoice(SPRITES.BILLBOARDS), -side);
-                //  for(i = 0 ; i < 20 ; i++) {
-                //  sprite = Util.randomChoice(SPRITES.PLANTS);
-                //offset = side * (1.5 + Math.random());
-                //  addSprite(n + Util.randomInt(0, 50), sprite, offset);
-                //  }
+        var side, sprite, offset;
+        for(n = 1000 ; n < (segments.length-50) ; n += 100) {
+          side      = Util.randomChoice([1, -1]);
+          addSprite(n + Util.randomInt(0, 50), Util.randomChoice(SPRITES.BILLBOARDS), -side);
+          //  for(i = 0 ; i < 20 ; i++) {
+          //  sprite = Util.randomChoice(SPRITES.PLANTS);
+          //offset = side * (1.5 + Math.random());
+          //  addSprite(n + Util.randomInt(0, 50), sprite, offset);
+          //  }
 
-              }
+        }
 
-            }
+      }
 
-            function resetCars() {
-              cars = [];
-              var n, car, segment, offset, z, sprite, speed;
-              for (var n = 0 ; n < totalCars ; n++) {
-                offset = Math.random() * Util.randomChoice([-0.8, 0.8]);
-                z      = Math.floor(Math.random() * segments.length) * segmentLength;
-                sprite = Util.randomChoice(SPRITES.CARS);
-                speed  = maxSpeed/4 + Math.random() * maxSpeed/(sprite == SPRITES.SEMI ? 4 : 2);
-                car = { offset: offset, z: z, sprite: sprite, speed: speed };
-                segment = findSegment(car.z);
-                segment.cars.push(car);
-                cars.push(car);
-              }
-            }
+      function resetCars() {
+        console.log("called resetCars");
+        cars = [];
+        var n, car, segment, offset, z, sprite, speed;
+        for (var n = 0 ; n < totalCars ; n++) {
+          offset = Math.random() * Util.randomChoice([-0.8, 0.8]);
+          z      = Math.floor(Math.random() * segments.length) * segmentLength;
+          sprite = Util.randomChoice(SPRITES.CARS);
+          speed  = maxSpeed/4 + Math.random() * maxSpeed/(sprite == SPRITES.SEMI ? 4 : 2);
+          car = { offset: offset, z: z, sprite: sprite, speed: speed };
+          segment = findSegment(car.z);
+          segment.cars.push(car);
+          cars.push(car);
+        }
+      }
 
-            //=========================================================================
-            // THE GAME LOOP
-            //=========================================================================
+      //=========================================================================
+      // THE GAME LOOP
+      //=========================================================================
 
-            Game.run({
-              canvas: canvas, render: render, update: update, stats: stats, step: step,
-              images: ["<?php if(isset($_GET['backgroundImg'])){ echo $_GET['backgroundImg']; } else { echo 'background1'; }?>", "<?php if(isset($_GET['sprites'])){ echo $_GET['sprites']; } else { echo 'sprites1'; }?>"],
-              keys: [
-                { keys: [KEY.LEFT,  KEY.A], mode: 'down', action: function() { keyLeft   = true;  } },
-                { keys: [KEY.RIGHT, KEY.D], mode: 'down', action: function() { keyRight  = true;  } },
-                { keys: [KEY.UP,    KEY.W], mode: 'down', action: function() { keyFaster = true;  } },
-                { keys: [KEY.DOWN,  KEY.S], mode: 'down', action: function() { keySlower = true;  } },
-                { keys: [KEY.LEFT,  KEY.A], mode: 'up',   action: function() { keyLeft   = false; } },
-                { keys: [KEY.RIGHT, KEY.D], mode: 'up',   action: function() { keyRight  = false; } }
-              ],
-              ready: function(images) {
-                background = images[0];
-                sprites    = images[1];
-                reset();
-                Dom.storage.fast_lap_time = Dom.storage.fast_lap_time || 180;
-                updateHud('fast_lap_time', formatTime(Util.toFloat(Dom.storage.fast_lap_time)));
-              }
-            });
 
-            function reset(options) {
-              options       = options || {};
-              canvas.width  = width  = Util.toInt(options.width,          width);
-              canvas.height = height = Util.toInt(options.height,         height);
-              lanes                  = Util.toInt(options.lanes,          lanes);
-              totalCars              = Util.toInt(options.totalCars,      totalCars);
-              maxSpeed               = Util.toInt(options.maxSpeed,       maxSpeed);
-			  maxTime                = Util.toInt(options.maxTime,        maxTime);
-              segmentLength          = Util.toInt(options.segmentLength,  segmentLength);
-              rumbleLength           = Util.toInt(options.rumbleLength,   rumbleLength);
-              cameraDepth            = 1 / Math.tan((fieldOfView/2) * Math.PI/180);
-              playerZ                = (cameraHeight * cameraDepth);
-              resolution             = height/480;
-              refreshTweakUI();
+      function reset(options) {
+        console.log("called reset");
+        options       = options || {};
+        canvas.width  = width  = Util.toInt(options.width,          width);
+        canvas.height = height = Util.toInt(options.height,         height);
+        lanes                  = Util.toInt(options.lanes,          lanes);
+        totalCars              = Util.toInt(options.totalCars,      totalCars);
+        maxSpeed               = Util.toInt(options.maxSpeed,       maxSpeed);
+        maxTime                = Util.toInt(options.maxTime,        maxTime);
+        segmentLength          = Util.toInt(options.segmentLength,  segmentLength);
+        rumbleLength           = Util.toInt(options.rumbleLength,   rumbleLength);
+        cameraDepth            = 1 / Math.tan((fieldOfView/2) * Math.PI/180);
+        playerZ                = (cameraHeight * cameraDepth);
+        resolution             = height/480;
+        refreshTweakUI();
 
-              if ((segments.length==0) || (options.segmentLength) || (options.rumbleLength) || (options.totalCars))
-              resetRoad(); // only rebuild road when necessary
-            }
+        if ((segments.length==0) || (options.segmentLength) || (options.rumbleLength) || (options.totalCars))
+        resetRoad(); // only rebuild road when necessary
+      }
 
-            //=========================================================================
-            // TWEAK UI HANDLERS
-            //=========================================================================
+      //=========================================================================
+      // TWEAK UI HANDLERS
+      //=========================================================================
 
-            Dom.on('resolution', 'change', function(ev) {
-              var w, h, ratio;
-              switch(ev.target.options[ev.target.selectedIndex].value) {
-                case 'fine':   w = 1280; h = 960;  ratio=w/width; break;
-                case 'high':   w = 1024; h = 768;  ratio=w/width; break;
-                case 'medium': w = 640;  h = 480;  ratio=w/width; break;
-                case 'low':    w = 480;  h = 360;  ratio=w/width; break;
-              }
-              reset({ width: w, height: h })
-              Dom.blur(ev);
-            });
+      /*Dom.on('resolution', 'change', function(ev) {
+        var w, h, ratio;
+        switch(ev.target.options[ev.target.selectedIndex].value) {
+          case 'fine':   w = 1280; h = 960;  ratio=w/width; break;
+          case 'high':   w = 1024; h = 768;  ratio=w/width; break;
+          case 'medium': w = 640;  h = 480;  ratio=w/width; break;
+          case 'low':    w = 480;  h = 360;  ratio=w/width; break;
+        }
+        reset({ width: w, height: h })
+        Dom.blur(ev);
+      });*/
 
-            Dom.on('lanes',          'change', function(ev) { Dom.blur(ev); reset({ lanes:         ev.target.options[ev.target.selectedIndex].value }); });
-            Dom.on('roadWidth',      'change', function(ev) { Dom.blur(ev); reset({ roadWidth:     Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
-            Dom.on('totalCars',      'change', function(ev) { Dom.blur(ev); reset({ totalCars:     Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
-            Dom.on('maxSpeed',       'change', function(ev) { Dom.blur(ev); reset({ maxSpeed:      Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
-            Dom.on('maxTime',        'change', function(ev) { Dom.blur(ev); reset({ maxTime:       Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
+      /*Dom.on('lanes',          'change', function(ev) { Dom.blur(ev); reset({ lanes:         ev.target.options[ev.target.selectedIndex].value }); });*/
+      Dom.on('roadWidth',      'change', function(ev) { console.log("changing");Dom.blur(ev); reset({ roadWidth:     Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
+      Dom.on('totalCars',      'change', function(ev) { Dom.blur(ev); reset({ totalCars:     Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
+      Dom.on('maxSpeed',       'change', function(ev) { Dom.blur(ev); reset({ maxSpeed:      Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
+      Dom.on('maxTime',        'change', function(ev) { Dom.blur(ev); reset({ maxTime:       Util.limit(Util.toInt(ev.target.value), Util.toInt(ev.target.getAttribute('min')), Util.toInt(ev.target.getAttribute('max'))) }); });
 
-            function refreshTweakUI() {
-              Dom.get('lanes').selectedIndex = lanes-1;
-              Dom.get('currentRoadWidth').innerHTML      = Dom.get('roadWidth').value      = roadWidth;
-              Dom.get('currenttotalCars').innerHTML      = Dom.get('totalCars').value      = totalCars;
-              Dom.get('currentmaxSpeed').innerHTML       = Dom.get('maxSpeed').value       = maxSpeed;
-              Dom.get('currentmaxTime').innerHTML        = Dom.get('maxTime').value        = maxTime;
-            }
+      function refreshTweakUI() {
+        Dom.get('lanes').selectedIndex = lanes-1;
+        Dom.get('currentRoadWidth').innerHTML      = Dom.get('roadWidth').value      = roadWidth;
+        Dom.get('currenttotalCars').innerHTML      = Dom.get('totalCars').value      = totalCars;
+        Dom.get('currentmaxSpeed').innerHTML       = Dom.get('maxSpeed').value       = maxSpeed;
+        Dom.get('currentmaxTime').innerHTML        = Dom.get('maxTime').value        = maxTime;
+      }
 
-            //=========================================================================
-          }<!-- ***************************************************************** -->
-   function GameLoop() {
+      //=========================================================================
+    }<!-- ***************************************************************** -->
+   /*function GameLoop() {
         //=========================================================================
         // UPDATE THE GAME WORLD
         //=========================================================================
@@ -1280,7 +1221,7 @@
 
             Game.run({
               canvas: canvas, render: render, update: update, stats: stats, step: step,
-              images: ["<?php if(isset($_GET['backgroundImg'])){ echo $_GET['backgroundImg']; } else { echo 'background1'; }?>", "<?php if(isset($_GET['sprites'])){ echo $_GET['sprites']; } else { echo 'sprites1'; }?>"],
+              images: ["background1", "sprites1"],
               keys: [
                 { keys: [KEY.LEFT,  KEY.A], mode: 'down', action: function() { keyLeft   = true;  } },
                 { keys: [KEY.RIGHT, KEY.D], mode: 'down', action: function() { keyRight  = true;  } },
@@ -1348,7 +1289,7 @@
             }
 
             //=========================================================================
-          }<!-- ***************************************************************** -->
+          }<!-- ***************************************************************** -->*/
 
 </script>
         </body>
