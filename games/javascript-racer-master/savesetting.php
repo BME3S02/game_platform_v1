@@ -67,12 +67,15 @@ else {
 //  $loadSprites = "SELECT value FROM gameconfig WHERE parameter='sprites' AND gameName = 'outrun' AND profileName ='".$_SESSION['login_user']."' ";
 
   $resultLoadRoadWidth = mysqli_query($database, $loadRoadWidth);
+  //echo $resultLoadRoadWidth;
   $countResultLoadRoadWidth = mysqli_num_rows($resultLoadRoadWidth);
 
   $resultLoadTotalCars = mysqli_query($database, $loadTotalCars);
+  //echo $resultLoadTotalCars;
   $countResultLoadTotalCars = mysqli_num_rows($resultLoadTotalCars);
 
   $resultLoadMaxSpeed = mysqli_query($database, $loadMaxSpeed);
+  //echo $resultLoadMaxSpeed;
   $countResultLoadMaxSpeed = mysqli_num_rows($resultLoadMaxSpeed);
 
 //  $resultLoadBackgroundImg = mysqli_query($database, $loadBackgroundImg);

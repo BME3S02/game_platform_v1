@@ -188,11 +188,6 @@ var Game = {  // a modified version of the game loop from my previous boulderdas
     var release = function (ev) { onkey(ev.keyCode, 'up');};
     Dom.on(document, 'keydown', press );
     Dom.on(document, 'keyup',  release);
-    Dom.on(document,'finished',function (ev) {
-      console.log("Done");
-      document.removeEventListener('keydown', press);
-      document.removeEventListener('keyup', release);
-    });
   },
 
   //---------------------------------------------------------------------------

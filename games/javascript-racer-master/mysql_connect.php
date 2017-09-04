@@ -20,6 +20,6 @@
 	mysqli_query($database, "SET NAMES utf8");
 
 	//choose database
-	if(!@mysqli_select_db($db_name))
-		//die(mysqli_error($database));
+	if(!@mysqli_select_db($database, $db_name))
+		die(mysqli_error($database));
 ?>

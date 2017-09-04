@@ -59,7 +59,11 @@
 	   *    Global variable    *
 	   *                       *
 	   *************************/
-
+     /*Dom.on(document,'finished',function (ev) {
+       console.log("Done");
+       document.removeEventListener('keydown', press);
+       document.removeEventListener('keyup', release);
+     });*/
      function stop(){
        console.log("called stop");
        if(confirm('You Win the Game!!!!')){
