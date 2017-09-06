@@ -202,9 +202,8 @@
 
 		console.log("startGame(): maxTime[" + maxTime + "]");
 
-		  displayToast("Start Game");
-        setTimeout(Stage.changeStage, maxTime * 1000);
-        setTimeout(stop, maxTime * Stage.maxStage * 1000);
+
+
 
         console.log("at 742: game.run() ");
         Game.run({
@@ -224,6 +223,9 @@
             reset();
             Dom.storage.fast_lap_time = Dom.storage.fast_lap_time || 180;
             updateHud('fast_lap_time', formatTime(Util.toFloat(Dom.storage.fast_lap_time)));
+            displayToast("Start Game");
+            setTimeout(Stage.changeStage, maxTime * 1000);
+            setTimeout(stop, maxTime * Stage.maxStage * 1000);
           }
         });
 

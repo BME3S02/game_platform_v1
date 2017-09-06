@@ -13,7 +13,7 @@
           echo '<a onclick="return checkLogin();" class="portfolio-link" data-toggle="modal">';
         }
         else{
-          echo '<a href="games/javascript-racer/index.php" class="portfolio-link" data-toggle="modal">';
+          echo '<a href="games/javascript-racer-master/index.php" class="portfolio-link" data-toggle="modal">';
         }
         ?>
         <div class="caption">
