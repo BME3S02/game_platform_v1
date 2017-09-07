@@ -13,13 +13,13 @@
       </select>
     </div>
     <label for="roadWidth">Car Size (<span id="currentRoadWidth"></span>) :</label>
-    <input id="roadWidth" name="roadWidth" type='range' min='500' max='3000' title="integer (500-3000)" value=<?php if(isset($_GET['roadWidth'])){ echo $_GET['roadWidth']; } else { echo $roadWidth; }?>>
+    <input id="roadWidth" name="roadWidth" type='range' min='500' max='3000' title="integer (500-3000)" >
     <label for="totalCars">total Cars (<span id="currenttotalCars"></span>) :</label></th>
-    <input id="totalCars" name="totalCars" type='range' min='1' max='200' title="integer (0-200)" value=<?php if(isset($_GET['totalCars'])){ echo $_GET['totalCars']; } else { echo  $totalCars; }?>>
+    <input id="totalCars" name="totalCars" type='range' min='1' max='200' title="integer (0-200)" >
     <label for="maxSpeed">Max Speed (<span id="currentmaxSpeed"></span>) :</label></th>
-    <input id="maxSpeed" name="maxSpeed" type='range' min='1' max='12000' title="integer (0-6000)" value=<?php if(isset($_GET['maxSpeed'])){ echo $_GET['maxSpeed']; } else { echo $maxSpeed; }?>>
+    <input id="maxSpeed" name="maxSpeed" type='range' min='1' max='12000' title="integer (0-6000)" >
     <label for="maxTime">Max Time[sec] (<span id="currentmaxTime"></span>) :</label></th>
-    <input id="maxTime" name="maxTime" type='range' min='30' max='180' title="integer (0-6000)" value=<?php if(isset($_GET['maxTime'])){ echo $_GET['maxTime']; } else { echo $maxTime; }?>>
+    <input id="maxTime" name="maxTime" type='range' min='3' max='180' title="integer (0-6000)" >
     <div style="display:none">
       <select id="backgroundImg" name="backgroundImg" style="border: 1;color: black;background: transparent;font-size: 10px;font-weight: bold;padding: 2px 10px;width: 100px; *width: 80px;*background: #58B14C;-webkit-appearance: none;">
         <option value="background1">background1</option>
@@ -38,7 +38,7 @@
         <option value="sprites5">sprites5</option>
       </select>
     </div>
-    
+
     <input type="submit" style="float: right;"value="Apply" id="submit" name="submit" class="btn btn-primary">
   </form>
 </div>
